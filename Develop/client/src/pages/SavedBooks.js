@@ -12,13 +12,13 @@ import { removeBookId } from '../utils/localStorage';
 const SavedBooks = () => {
 	const { loading, data: userData } = useQuery(GET_ME);
 
-	console.log('GET_ME data: ', userData);
-	const [ removeBook ] = useMutation(REMOVE_BOOK);
+	// console.log('GET_ME data: ', userData);
+	const [removeBook] = useMutation(REMOVE_BOOK);
 	// create function that accepts the book's mongo _id value as param and deletes the book from the database
 	const handleDeleteBook = async (bookId) => {
 		try {
 			await removeBook({
-				variables : { bookId: bookId }
+				variables: { bookId: bookId }
 			});
 			// upon success, remove book's id from localStorage
 			removeBookId(bookId);
@@ -29,7 +29,7 @@ const SavedBooks = () => {
 
 	// if data isn't here yet, say so
 	if (loading) {
-	  	return <h2>LOADING...</h2>;
+		return <h2>LOADING...</h2>;
 	}
 
 	return (
@@ -48,8 +48,8 @@ const SavedBooks = () => {
 								? 'book'
 								: 'books'}:`
 						) : (
-							'You have no saved books!'
-						)}
+								'You have no saved books!'
+							)}
 					</h2>
 					<CardColumns>
 						{userData.me.savedBooks.map((book) => {
@@ -63,7 +63,9 @@ const SavedBooks = () => {
 										/>
 									) : null}
 									<Card.Body>
-										<Card.Title>{book.title}</Card.Title>
+										<a href={book.link} target="_blank" rel="noopener noreferrer">
+											<Card.Title>{book.title}</Card.Title>
+										</a>
 										<p className="small">Authors: {book.authors}</p>
 										<Card.Text>{book.description}</Card.Text>
 										<Button
